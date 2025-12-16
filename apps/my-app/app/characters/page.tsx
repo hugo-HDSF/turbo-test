@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type character = {
     id: number;
     name: string;
@@ -30,20 +32,25 @@ export default async function charactersPage() {
     return (
         // use images and make a baisic grid layout
         <div
-            //className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4"
-            //make only 3 caracters per row
             className="flex gap-4 p-4 justify-center flex-wrap"
         >
-            {charactersResponse.results.map((character) => (
-                <div key={character.id} className="bg-white rounded-lg shadow-md p-4 w-1/4">
-                    <img src={character.image} alt={character.name}
-                         className="w-full h-48 object-cover rounded-md mb-4"/>
-                    <h2 className="text-xl font-bold mb-2">{character.name}</h2>
-                    <p className="text-gray-700">Status: {character.status}</p>
-                    <p className="text-gray-700">Species: {character.species}</p>
-                    <p className="text-gray-700">Type: {character.type || "N/A"}</p>
-                </div>
-            ))}
+            {charactersResponse.results.map((character) => {
+                const isRickSanchez = character.name === "Rick Sanchez"
+                return (
+
+                    <Link
+                        href={`/characters/${character.id}`}
+                        key={character.id}
+                        className={`${isRickSanchez ? "bg-red-500" : "bg-white"}  rounded-lg shadow-md p-4 w-1/4`}>
+                        <img src={character.image} alt={character.name}
+                             className="w-full h-48 object-cover rounded-md mb-4"/>
+                        <h2 className="text-xl font-bold mb-2">{character.name}</h2>
+                        <p className="text-gray-700">Status: {character.status}</p>
+                        <p className="text-gray-700">Species: {character.species}</p>
+                        <p className="text-gray-700">Type: {character.type || "N/A"}</p>
+                    </Link>
+                );
+            })}
         </div>
     );
 }
